@@ -5,8 +5,6 @@
  */
 package kenken.Domain;
 
-import java.util.List;
-
 /**
  *
  * @author dasilvacontin
@@ -20,6 +18,7 @@ public class User extends DomainBase {
         this.password = password;
     }
     
+    @Override
     public String serialize() {
         return username + " " + password;
     }
@@ -32,6 +31,7 @@ public class User extends DomainBase {
         return u;
     }
     
+    @Override
     public Boolean matchesQuery(String key, String value) {
         return key.equals("username") && value.equals(username);
     }
