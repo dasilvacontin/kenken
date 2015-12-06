@@ -1,0 +1,20 @@
+# Use cases
+# =========
+
+- name       : Sign Up
+  behavior   : "The user chooses to a create an account. The user needs to
+    provide a username and a password (twice) in order to create a new account.
+    The system will validate the data and create a new account."
+  exceptions :
+    - "Username is already in use: choose a different one or abort."
+    - "Password and re-password don't match: retry"
+    - "Username or password length is invalid: choose a different one or abort."
+    - "Username contains invalid characters: choose a different one or abort."
+
+- name       : Design a Kenken Board
+  behaviour  : "The user chooses to design a new kenken board. The user selects
+    a board size. The user fills the board with numbers and defines regions in
+    the board. The system validates the data and saves the kenken board."
+  exceptions :
+    - "Board size is invalid: choose a different size or abort."
+    - "Board is invalid, regions rules are not satisfied: retry or abort."
