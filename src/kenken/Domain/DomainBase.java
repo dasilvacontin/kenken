@@ -12,6 +12,6 @@ package kenken.Domain;
 public abstract class DomainBase {
     public abstract String serialize();
     public static DomainBase deserialize(String str) { return null; }
-    public abstract String description();
+    public abstract String toString();
     public abstract Boolean matchesQuery(String key, String value);
 }

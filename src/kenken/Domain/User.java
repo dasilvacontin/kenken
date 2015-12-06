@@ -69,7 +69,7 @@ public class User extends DomainBase {
      * @return description string
      */
     @Override
-    public String description() {
-        return "username: " + this.username + ", password: " + this.password;
+    public String toString() {
+        return "[User username: " + username + ", password: " + password + "]";
     }
 }
