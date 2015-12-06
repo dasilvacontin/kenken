@@ -12,11 +12,21 @@ import java.util.List;
  *
  * @author dasilvacontin
  */
-public class DomainBase implements Serializable {
-    public DomainBase(List<String> data) {
-        // nada
+public class DomainBase {
+    public String serialize() {
+        return "domain-base";
     }
+    
+    public static DomainBase deserialize(String str) {
+        DomainBase obj = new DomainBase();
+        return obj;
+    }
+    
     public String description() {
         return "kek";
+    }
+    
+    public Boolean matchesQuery(String key, String value) {
+        return false;
     }
 }

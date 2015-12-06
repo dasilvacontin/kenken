@@ -15,14 +15,25 @@ public class User extends DomainBase {
     private String username;
     private String password;
     
-    /**
-     *
-     * @param data
-     */
-    public User(List<String> data) {
-        super(data);
-        this.username = data.get(0);
-        this.password = data.get(1);
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+    
+    public String serialize() {
+        return username + " " + password;
+    }
+    
+    public static User deserialize(String str) {
+        String[] props = str.split(" ");
+        String username = props[0];
+        String password = props[1];
+        User u = new User(username, password);
+        return u;
+    }
+    
+    public Boolean matchesQuery(String key, String value) {
+        return key.equals("username") && value.equals(username);
     }
     
     /**
