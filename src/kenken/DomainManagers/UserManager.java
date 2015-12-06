@@ -9,7 +9,7 @@ import  kenken.Domain.User;
  *
  * @author dasilvacontin
  */
-public class UserManager extends DomainManager {
+public class UserManager extends DomainManager<User> {
     public UserManager() {
         dbPath = "./data/Domain/User.db";
         managedClass = User.class;

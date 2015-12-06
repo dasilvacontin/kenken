@@ -15,14 +15,14 @@ import java.util.List;
  *
  * @author dasilvacontin
  */
-public class DomainManager {
+public class DomainManager<T extends DomainBase> {
     public String dbPath;
     public Class managedClass;
 
-    public DomainBase parseLine(String str) {
+    public T parseLine(String str) {
         try {
             Method m = managedClass.getMethod("deserialize", String.class);
-            return (DomainBase) m.invoke(null, str);
+            return (T) m.invoke(null, str);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
             return null;
@@ -30,7 +30,7 @@ public class DomainManager {
     }
 
     public DomainBase findOneWith(String key, String value) {
-        List<DomainBase> results = findWhere(key, value, 1);
+        List<T> results = findWhere(key, value, 1);
         if (results.isEmpty()) {
             return null;
         } else {
@@ -38,16 +38,16 @@ public class DomainManager {
         }
     }
     
-    public List<DomainBase> find() {
+    public List<T> find() {
         return findWhere(null, null, -1);
     }
     
-    public List<DomainBase> findWhere(String key, String value) {
+    public List<T> findWhere(String key, String value) {
         return findWhere(key, value, -1);
     }
     
-    public List<DomainBase> findWhere(String key, String value, int limit) {
-        List<DomainBase> results = new LinkedList<>();
+    public List<T> findWhere(String key, String value, int limit) {
+        List<T> results = new LinkedList<>();
         
         if (limit == 0) {
             return results;
@@ -59,7 +59,7 @@ public class DomainManager {
             String line = in.readLine();
 
             while (line != null) {
-                DomainBase obj = parseLine(line);
+                T obj = parseLine(line);
                 if (key == null || obj.matchesQuery(key, value)) {
                     results.add(obj);
                     if (limit > 0) {
@@ -71,7 +71,7 @@ public class DomainManager {
                 }
                 line = in.readLine();
             }
-            return null;
+            return results;
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
             return results;
