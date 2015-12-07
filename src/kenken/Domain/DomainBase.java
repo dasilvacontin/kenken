@@ -9,9 +9,23 @@ package kenken.Domain;
  *
  * @author dasilvacontin
  */
-public abstract class DomainBase {
+public class DomainBase {
+    
     public String _id;
-    public abstract String serialize();
-    public static DomainBase deserialize(String[] props) { return null; }
-    public abstract Boolean matchesQuery(String key, String value);
+    
+    public String serialize() {
+        if (_id == null) {
+            return "[Missing _id value]";
+        } else {
+            return _id;
+        }
+    }
+    
+    public static DomainBase deserialize(String[] props) throws Exception {
+        throw new Exception("Method not meant to be used.");
+    }
+    
+    public Boolean matchesQuery(String key, String value) throws Exception {
+        throw new Exception("Method not meant to be used.");
+    }
 }

@@ -25,26 +25,54 @@ public class DomainManager<T extends DomainBase> {
     private int nextId;
     
     public DomainManager() {
-        nextId = 0;
+        getNextId();
+    }
+    
+    public DomainManager(String dbPath, Class managedClass) {
+        this.dbPath = dbPath;
+        this.managedClass = managedClass;
+        getNextId();
     }
 
+    private void getNextId() {
+        nextId = 0;
+        try {
+            FileReader fr = new FileReader(dbPath);
+            BufferedReader in = new BufferedReader(fr);
+            String line;
+            String lastLine = null;
+            while ((line = in.readLine()) != null) {
+                lastLine = line;
+            }
+            if (lastLine != null) {
+                String stringyId = parseIdFromLine(lastLine);
+                nextId = Integer.parseInt(stringyId) + 1;
+            }
+            in.close();
+            fr.close();
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+    
     public T parseLine(String str) {
-        String[] data = str.split(" ", 2);
-        String id = data[0];
-        String[] props = data[1].split(" ");
-        
+        String[] props = str.split(" ");
         try {
             Method m = managedClass.getMethod("deserialize", String[].class);
             T obj = (T) m.invoke(null, (Object) props);
-            obj._id = id;
             return obj;
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
             return null;
         }
     }
+    
+    private String parseIdFromLine(String line) {
+        String[] data = line.split(" ", 2);
+        return data[0];
+    }
 
-    public DomainBase findOneWith(String key, String value) {
+    public T findOneWith(String key, String value) {
         List<T> results = findWhere(key, value, 1);
         if (results.isEmpty()) {
             return null;
@@ -128,7 +156,7 @@ public class DomainManager<T extends DomainBase> {
         }
         
         String id = obj._id;
-        String serializedObj = id + " " + obj.serialize();
+        String serializedObj = obj.serialize();
         Boolean replaced = false;
         
         // this could be optimised if lines always had the same number of bytes

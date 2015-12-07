@@ -26,14 +26,15 @@ public class Score extends DomainBase {
     
     @Override
     public String serialize() {
-        return boardId + " " + boardSize + " " + username + " " + time;
+        return super.serialize() + " " + boardId + " " + boardSize + " " + username + " " + time;
     }
 
     public static Score deserialize(String[] props) {
-        int boardId = Integer.parseInt(props[0]);
-        int boardSize = Integer.parseInt(props[1]);
-        String username = props[2];
-        int time = Integer.parseInt(props[3]);
+        String id = props[0];
+        int boardId = Integer.parseInt(props[1]);
+        int boardSize = Integer.parseInt(props[2]);
+        String username = props[3];
+        int time = Integer.parseInt(props[4]);
         
         Score s = new Score(boardId, boardSize, username, time);
         return s;

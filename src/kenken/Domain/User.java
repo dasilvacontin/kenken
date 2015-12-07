@@ -20,13 +20,15 @@ public class User extends DomainBase {
     
     @Override
     public String serialize() {
-        return username + " " + password;
+        return super.serialize() + " " + username + " " + password;
     }
     
     public static User deserialize(String[] props) {
-        String username = props[0];
-        String password = props[1];
+        String id = props[0];
+        String username = props[1];
+        String password = props[2];
         User u = new User(username, password);
+        u._id = id;
         return u;
     }
     
@@ -69,6 +71,6 @@ public class User extends DomainBase {
      */
     @Override
     public String toString() {
-        return "[User username: " + username + ", password: " + password + "]";
+        return "[User _id: " + _id + ", username: " + username + ", password: " + password + "]";
     }
 }
