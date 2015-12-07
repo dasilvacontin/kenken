@@ -23,8 +23,7 @@ public class User extends DomainBase {
         return username + " " + password;
     }
     
-    public static User deserialize(String str) {
-        String[] props = str.split(" ");
+    public static User deserialize(String[] props) {
         String username = props[0];
         String password = props[1];
         User u = new User(username, password);

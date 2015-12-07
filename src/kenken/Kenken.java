@@ -22,10 +22,10 @@ public class Kenken {
         
         User user;
         UserManager userManager = new UserManager();
-        user = (User) userManager.findOneWith("username", "foo");
+        user = (User) userManager.findOneWith("username", "dasilvacontin");
         if (user != null) {
             System.out.println(user);
-            user.setUsername("dasilvacontin");
+            user.setUsername("flurry");
             System.out.println(user);
             
             List<Score> scores;
@@ -34,6 +34,8 @@ public class Kenken {
             scores.forEach((score) -> {
                 System.out.println(score);
             });
+            
+            userManager.save(user);
         }
     }
     

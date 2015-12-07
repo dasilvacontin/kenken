@@ -10,8 +10,8 @@ package kenken.Domain;
  * @author dasilvacontin
  */
 public abstract class DomainBase {
+    public String _id;
     public abstract String serialize();
-    public static DomainBase deserialize(String str) { return null; }
-    public abstract String toString();
+    public static DomainBase deserialize(String[] props) { return null; }
     public abstract Boolean matchesQuery(String key, String value);
 }

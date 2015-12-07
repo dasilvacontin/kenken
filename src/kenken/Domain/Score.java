@@ -29,8 +29,7 @@ public class Score extends DomainBase {
         return boardId + " " + boardSize + " " + username + " " + time;
     }
 
-    public static Score deserialize(String str) {
-        String[] props = str.split(" ");
+    public static Score deserialize(String[] props) {
         int boardId = Integer.parseInt(props[0]);
         int boardSize = Integer.parseInt(props[1]);
         String username = props[2];
