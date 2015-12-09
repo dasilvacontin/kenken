@@ -17,7 +17,7 @@ import kenken.Utils;
  */
 public class Kenken implements ViewDelegate {
     private final DomainController domainController;
-    private final List<View> viewStack;
+    private List<View> viewStack;
     private View currentView;
     private final UserManager userManager;
     
@@ -79,7 +79,7 @@ public class Kenken implements ViewDelegate {
                 inputs = Arrays.asList(
                     "Username",
                     "Password"
-                );        
+                );
                 view = new InputListView("Login", "login", inputs);
                 break;
                 
@@ -88,7 +88,7 @@ public class Kenken implements ViewDelegate {
                     "Username",
                     "Password",
                     "Re-Password"
-                );        
+                );
                 view = new InputListView("Register", "register", inputs);
                 break;
                 
@@ -97,11 +97,17 @@ public class Kenken implements ViewDelegate {
         }
         return view;
     }
+    
+    private void popStackView() {
+        if (viewStack.size() > 1) {
+            viewStack.remove(viewStack.size() - 1);
+        }
+    }
 
     // pops a view from the view stack, presenting the previous one
-    private void popView() {
+    private void doBack() {
         if (viewStack.size() >= 2) {
-            viewStack.remove(viewStack.size() - 1); // pop view
+            popStackView();
             View view = viewStack.get(viewStack.size() - 1);
             renderView(view);
         } else {
@@ -114,16 +120,22 @@ public class Kenken implements ViewDelegate {
     
     // ditch current view and show a provided one
     private void switchView(View view) {
-        viewStack.remove(viewStack.size() - 1); // pop view
+        popStackView();
         presentView(view);
+    }
+    
+    private void showMainMenu() {
+        viewStack = new LinkedList<>();
+        View mainMenu = new MainMenuView(domainController.getLoggedUser());
+        presentView(mainMenu);
     }
     
     private void doLogin(List<String> params) {
         String username = params.get(0);
         String password = params.get(1);
+        User loggedUser = null;
         try {
-            domainController.doLogin(username, password);
-            // GO TO MAIN MENU
+            loggedUser = domainController.doLogin(username, password);
         } catch (Exception ex) {
             currentView.showErrorMessage(ex.getMessage());
             List<String> actions = Arrays.asList("Retry", "Back");
@@ -136,18 +148,21 @@ public class Kenken implements ViewDelegate {
             retryView.setTitle("Login - Error");
             switchView(retryView);
         }
+        if (loggedUser != null) {
+            showMainMenu();
+        }
     }
     
     private void doRegister(List<String> params) {
         String username = params.get(0);
         String password = params.get(1);
         String repassword = params.get(2);
+        User loggedUser = null;
         try {
             if (!password.equals(repassword)) {
                 throw new Exception("Passwords don't match.");
             }
-            domainController.doRegister(username, password);
-            // USer is registered, go to main menu
+            loggedUser = domainController.doRegister(username, password);
         } catch (Exception ex) {
             currentView.showErrorMessage(ex.getMessage());
             List<String> actions = Arrays.asList("Retry", "Back");
@@ -159,6 +174,9 @@ public class Kenken implements ViewDelegate {
             ActionListView retryView = new ActionListView(actions, consequences);
             retryView.setTitle("Register - Error");
             switchView(retryView);
+        }
+        if (loggedUser != null) {
+            showMainMenu();
         }
     }
     
@@ -191,7 +209,7 @@ public class Kenken implements ViewDelegate {
                 break;
                 
             case "back":
-                popView();
+                doBack();
                 break;
                 
             default:

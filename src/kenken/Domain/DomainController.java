@@ -46,4 +46,8 @@ public class DomainController {
         loggedUser = user;
         return loggedUser;
     }
+    
+    public User getLoggedUser() {
+        return loggedUser;
+    }
 }
