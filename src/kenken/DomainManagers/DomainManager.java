@@ -25,12 +25,24 @@ public class DomainManager<T extends DomainBase> {
     private int nextId;
     
     public DomainManager() {
-        getNextId();
+        bootUp();
     }
     
     public DomainManager(String dbPath, Class managedClass) {
         this.dbPath = dbPath;
         this.managedClass = managedClass;
+        bootUp();
+    }
+    
+    private void bootUp() {
+        Path p = Paths.get(dbPath);
+        if (!Files.exists(p)) {
+            try {
+                Files.createFile(Paths.get(dbPath));
+            } catch (Exception ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
         getNextId();
     }
 

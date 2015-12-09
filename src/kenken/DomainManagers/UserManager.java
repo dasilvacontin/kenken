@@ -11,7 +11,6 @@ import  kenken.Domain.User;
  */
 public class UserManager extends DomainManager<User> {
     public UserManager() {
-        dbPath = "./data/Domain/User.db";
-        managedClass = User.class;
+        super("./data/Domain/User.db", User.class);
     }
 }
