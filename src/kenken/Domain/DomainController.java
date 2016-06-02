@@ -15,11 +15,9 @@ import kenken.Views.ActionListView;
  */
 public class DomainController {
     UserManager userManager;
-    private User loggedUser;
     
     public DomainController() {
         userManager = new UserManager();
-        loggedUser = null;
     }
     
     public User doLogin(String username, String password) throws Exception {
@@ -31,8 +29,7 @@ public class DomainController {
         if (!passwordMatches) {
             throw new Exception("Incorrect password.");
         }
-        loggedUser = user;
-        return loggedUser;
+        return user;
     }
     
     public User doRegister(String username, String password) throws Exception {
@@ -43,11 +40,20 @@ public class DomainController {
             throw new Exception("Username is already in use.");
         }
         userManager.save(user);
-        loggedUser = user;
-        return loggedUser;
+        return user;
     }
     
-    public User getLoggedUser() {
-        return loggedUser;
+    public Game newGameRandomBoard(User player, int size) throws Exception {
+        Board b = new Board(null, size);
+        b.validate();
+        b.generateRandomBoard();
+        Game g = new Game(player.getUsername(), b);
+        return g;
+    }
+    
+    public Board designNewBoard(User designer, int size) throws Exception {
+        Board b = new Board(designer.getUsername(), size);
+        throw new Exception("Not yet implemented.");
+        //return b;
     }
 }

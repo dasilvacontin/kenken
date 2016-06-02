@@ -20,6 +20,7 @@ public class Kenken implements ViewDelegate {
     private List<View> viewStack;
     private View currentView;
     private final UserManager userManager;
+    private User loggedUser;
     
     /**
      * @param args the command line arguments
@@ -33,6 +34,7 @@ public class Kenken implements ViewDelegate {
         domainController = new DomainController();
         viewStack = new LinkedList<>();
         userManager = new UserManager();
+        loggedUser = null;
     }
     
     public void start() {
@@ -126,14 +128,13 @@ public class Kenken implements ViewDelegate {
     
     private void showMainMenu() {
         viewStack = new LinkedList<>();
-        View mainMenu = new MainMenuView(domainController.getLoggedUser());
+        View mainMenu = new MainMenuView(loggedUser);
         presentView(mainMenu);
     }
     
     private void doLogin(List<String> params) {
         String username = params.get(0);
         String password = params.get(1);
-        User loggedUser = null;
         try {
             loggedUser = domainController.doLogin(username, password);
         } catch (Exception ex) {
@@ -157,7 +158,6 @@ public class Kenken implements ViewDelegate {
         String username = params.get(0);
         String password = params.get(1);
         String repassword = params.get(2);
-        User loggedUser = null;
         try {
             if (!password.equals(repassword)) {
                 throw new Exception("Passwords don't match.");

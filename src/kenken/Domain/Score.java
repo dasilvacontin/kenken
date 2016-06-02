@@ -4,24 +4,21 @@
  * and open the template in the editor.
  */
 package kenken.Domain;
-
-import kenken.Domain.DomainBase;
 /**
  *
  * @author dasilvacontin
  */
 public class Score extends DomainBase {
-    private int boardId;
-    private int boardSize;
-    private int time;
-    private String username;
+    final private int boardId;
+    final private int boardSize;
+    final private int time;
+    final private String username;
     
     public Score(int boardId, int boardSize, String username, int time) {
         this.boardId = boardId;
         this.boardSize = boardSize;
         this.username = username;
         this.time = time;
-
     }
     
     @Override
